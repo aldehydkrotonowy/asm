@@ -1,8 +1,14 @@
 # asm
 
-nasm -f elf64 -o test.o test.asm 
-
+nasm -f elf64 -o test.o test.asm \
 ld test.o -o test
+
+---
+
+## debuging 
+nasm -g -F dwarf -f elf64 hello.asm \  
+ld -o hello hello.o \
+gdb ./hello
 
 ---
 
@@ -40,3 +46,4 @@ full syscall [list](https://filippo.io/linux-syscall-table/)
 ## Reading
 - [The Linux kernel - system calls](https://www.win.tue.nl/~aeb/linux/lk/lk-4.html)
 - [Sysenter Based System Call Mechanism in Linux 2.6](https://articles.manugarg.com/systemcallinlinux2_6.html)
+- [Dynamiczna alokacja pamięci pod Linuksem - sys_brk()](http://bogdro.evai.pl/linux/alloc_tut_linux.html)
