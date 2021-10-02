@@ -1,60 +1,37 @@
 section .data
-    text db "Hello world",10
-    question db "What is your name? "
-    gret db "hello, "
-    
+    question db "Give me some number: "
+    text db "hello from loop ",10
 section .bss
-    name resb 16 ; reserve 16 baits
-
-section .text   
+    userNumber resb 32
+section .text
     global _start
 _start:
-    call _print_hello
-    call _print_question
-    call _getName
-    call _print_gret
-    call _print_name
-
-    mov rax,60
-    mov rdi,0
-    syscall
-
-_getName:
-    mov rax,0
-    mov rdi,0
-    mov rsi,name
-    mov rdx,16
-    syscall
-    ret
-
-_print_hello:
-    mov rax,1
-    mov rdi,1
-    mov rsi,text
-    mov rdx,14
-    syscall
-    ret
-
-_print_question:
+    ; print question
     mov rax,1
     mov rdi,1
     mov rsi,question
-    mov rdx,19
+    mov rdx,21
     syscall
-    ret
+_read_number:
+    mov rax,0
+    mov rdi,0
+    mov rsi,userNumber
+    mov rdx,32
+    syscall
 
-_print_gret:
-    mov rax,1
-    mov rdi,1
-    mov rsi, gret
-    mov rdx,7
-    syscall
-    ret
+;     mov rcx,userNumber
+;     sub rcx,'0' 
+;     cmp rcx,0
+;     je end
+; myLoop:
+;     mov rax,1
+;     mov rdi,1
+;     mov rsi,userNumber
+;     mov rdx,17
+;     syscall
+;     loop myLoop
 
-_print_name:
-    mov rax,1
-    mov rdi,1
-    mov rsi,name
-    mov rdx,16
+; end:
+    mov rax,60
+    mov rdi,0
     syscall
-    ret

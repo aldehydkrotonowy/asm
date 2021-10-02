@@ -7,7 +7,7 @@ if [ -f "test" ]; then
   rm test
 fi
 echo "creating obj file"
-nasm -f elf64 -o test.o test.asm
+nasm -g -f elf64 -o test.o test.asm
 echo "linking"
 ld test.o -o test
 echo "end"

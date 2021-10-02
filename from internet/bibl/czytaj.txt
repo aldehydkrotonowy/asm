@@ -1,0 +1,141 @@
+Wskazowki dotyczace korzystania z biblioteki:
+
+1. Aby uzywac tej biblioteki, nalezy:
+   a) dolaczyc do programu (zwykle odbywa sie to za pomoca dyrektywy
+      "include") plik "std_bibl.inc" znajdujacy sie w podkatalogu
+      odpowiednim dla posiadanego kompilatora i systemu.
+      Aktualnie obslugiwane sa skladnie kompilatorow:
+
+      - TASM: "bibl\incl\dosbios", mozliwe, ze MASM tez zrozumie pliki TASMa
+      - NASM:
+	* "bibl/incl/dosbios/nasm" (DOS, format OBJ/OMF), albo
+	* "bibl/incl/dosbios/nasm32" (DOS, format COFF), albo
+	* "bibl/incl/linuxbsd/nasm" (Linux/BSD)
+      - FASM:
+	* "bibl/incl/dosbios/fasm" (DOS, format OBJ/OMF), albo
+	* "bibl/incl/dosbios/fasm32" (DOS, format COFF), albo
+	* "bibl/incl/linuxbsd/fasm" (Linux/BSD)
+
+   b) uzywajac linkera, dolaczyc do programu odpowiedni plik znajdujacy
+      sie w podkatalogu "bibl/lib".
+
+   PRZYKLADY (po uwzglednieniu dyrektywy "include" w pliku 'program.asm'):
+
+    * NASM i LD (Linux/BSD):
+	nasm -f elf -o program.o program.asm
+	ld -s -o program program.o bibl/lib/libasmio.a
+
+    * NASM i LD (Linux/BSD, program 64-bitowy):
+	nasm -f elf64 -o program.o program.asm
+	ld -s -o program program.o bibl/lib/libasmio64.a
+
+    * FASM i LD (Linux/BSD):
+	fasm program.asm program.o
+	ld -s -o program program.o bibl/lib/libasmio.a
+
+    * TASM i Tlink (DOS):
+    	tasm program.asm
+    	tlink program.obj bibl\lib\bibldos.lib
+
+    * NASM i VAL (BIOS):
+    	nasm -f obj -o program.obj program.asm
+    	val program.obj,progam.exe,,bibl\lib\biblbios.lib,
+
+    * NASM i LD, format COFF (DOS):
+    	nasm -f coff -o program.obj program.asm
+    	ld -s -o progam.exe program.obj bibl\lib\bibldos.a
+
+    * FASM i LD, format COFF (DOS):
+	fasm program.asm program.o
+    	ld -s -o progam.exe program.o bibl\lib\bibldos.a
+
+   Mozna tez korzystac ze srodowisk programistycznych typu IDE, np. FreshIDE
+   dla FASMa czy RadASM. Mozna wtedy:
+
+   a) jesli srodowisko i kompilator to obsluguja, dodac sciezke do katalogu
+      "incl" do sciezki wyszukiwania plikow naglowkowych (opcja "-I" w NASM),
+
+   b) jesli srodowisko i kompilator to obsluguja, dodac odpowiedni plik
+      biblioteki (jeden z plikow *.a lub *.lib) do komendy linkowania
+      projektu.
+
+   Jesli kompilator lub srodowisko nie posiadaja takich opcji (np. aktualnie
+   FreshIDE), mozna np. katalog "incl", wraz z zawartoscia, skopiowac do
+   odpowiedniego miejsca w projekcie, a linkowanie wykonywac osobno.
+
+2. Kod zrodlowy modulow znajduje sie w podkatalogu "bibl/src".
+
+3. Przyklady zastosowania procedur znajdujacych sie w bibliotece sa w
+   podkatalogu "bibl/przykl/dosbios" (skladnia TASM), "bibl/przykl/*/nasm*"
+   (skladnia NASM) i "bibl/przykl/*/fasm*" (skladnia FASM).
+
+4. Aby korzystac z procedury zawartej w bibliotece, zaleca sie uzywanie
+   odpowiadajacego jej makra. Wszystkie makra umieszczone sa w pilkach *.inc
+   (w podkatalogu "bibl/incl") odpowiadajacych modulom biblioteki i
+   domyslnie zalaczonych do odpowiedniego pliku "std_bibl.inc".
+   Pliki *.inc zawieraja tez krotki opis kazdej procedury (parametry i
+   zwracane wartosci).
+
+UWAGA : W zwiazku ze sciezkami dostepu wpisanymi w pliku "std_bibl.inc",
+      wymagane jest, aby katalogiem biezacym przy kompilacji byl katalog
+      zawierajacy podkatalog "bibl". Jezeli jest to niemozliwe lub
+      niewygodne, mozna zmienic sciezki dostepu na bardziej odpowiednie.
+
+5. Procedur z biblioteki mozna uzywac tylko zgodnie z licencja, zawarta w
+   pliku "Licencja.txt" (GNU LGPL gwarantuje darmowe uzywanie do komercyjnych
+   i niekomercyjnych projektow oraz dowolne zmiany, lecz z podaniem pelnej
+   listy zmian i zachowaniem oryginalnego autora i licencji).
+
+   Przykladowych programow oraz plikow naglowkowych takze mozna uzywac
+   tylko zgodnie z GNU LGPL.
+
+   Skrypty maja informacje o licencji umieszczona w swoich kodach.
+
+6. Plik "bibl/incl/*/nasm/do_nasma.inc" ulatwia NASMowi zaakceptowanie
+   przynajmniej czesci skladni TASMa/MASMa oraz FASMa w tym stopniu, ze
+   najprostsze programy napisane pod TASMa kompiluja sie bez zmian kodu
+   (poza dyrektywa dolaczajaca ten plik).
+   Podobna role dla FASMa pelni plik "bibl/incl/*/fasm/do_fasma.inc".
+
+   PLIKI TE NIE SA DOMYSLNIE DOLACZANE DO PLIKU "STD_BIBL.INC" !
+
+7. Biblioteka zostala stworzona przy uzyciu darmowych narzedzi:
+
+   - NASM, The Netwide Assembler, http://nasm.sf.net
+   - AR, The GNU Archiver
+   - "bibliotekarz" lib (lib-sk32.zip):
+     LIB/LLIB, the librarian for MS compatible OBJ and LIB files.
+     (LLIB - Copyright 1996 Steffen Kaiser),
+     http://www.dunfield.com/downloads.htm (szukaj SKLIB31.ZIP)
+     http://www2.inf.fh-rhein-sieg.de/~skaise2a/ska/sources.html
+     Jesli tam go nie ma, to poszukajcie na stronach FreeDOSa:
+           http://www.freedos.org
+   - GNU Make
+
+8. W katalogu "skrypty" jest kilka uzytecznych skryptow Perla:
+   - konwertery plikow naglowkowych C na pliki naglowkowe NASM/FASM/GNU as
+   - konwertery NASM<->FASM<->Gas (GNU as)
+   - generator plikow Makefile dla FASMa
+   - generator sekcji __versions do modulow jadra Linuksa 2.6
+   - AsmDoc - generator dokumentacji HTML z plikow zrodlowych asemblera
+     (UWAGA - plik w kodowaniu UTF-8)
+   - asm4doxy.pl: transformator udokumentowanych plikow asm na udokumentowane
+     pliki w skladni pseudo-C, zrozumiale dla programu Doxygen
+
+   Niektore skrypty wymagaja modulu Asm::X86, rozpowszechnianego wraz z
+   biblioteka, dostepnego rowniez z CPAN -http://search.cpan.org/~bogdro/.
+   Alternatywnie mozna go pobrac ze strony
+   http://bogdro.evai.pl/soft4asm/ lub http://bogdro.byethost18.com/soft4asm/.
+
+UWAGI:
+- dzwiek z glosniczka w systemach Linux/BSD wymaga obslugi glosniczka w
+  jadrze (wbudowanej lub poprzez modul 'pcspkr') oraz moze wymagac
+  uprawnien administratora systemu (root).
+
+========
+
+Wszelkie uwagi i pytania prosze przesylac na adres e-mail:
+
+bogdandr@op.pl
+
+Bogdan 'bogdro' Drozdowski

@@ -1,0 +1,162 @@
+2021-03-04	Bogdan Drozdowski <bogdandr@op.pl>
+
+	Dostosowanie biblioteki pod 64-bitowe systemy klasy Linux/BSD.
+	Poprawki bledow. Znaczne uproszczenia kodu. Aktualizacja narzedzi.
+	* czytaj.txt: dopisanie korzystania z 64-bitowej wersji biblioteki.
+	  Aktualizacja adresow. Dopisanie korzystania ze srodowisk IDE.
+	* src/wewnetrz.inc: nowa stala: __KOD_64BIT. Dodana sekcja mowiaca
+	  linkerowi 'ld' pod Linuksem/BSD o tym, ze stos jest niewykonywalny
+	  (tj. nie mozna ze stosu uruchomic kodu). Dodane makra generujace
+	  rejestry i instrukcje odpowiednie dla trybu (16-/32-/64-bitowe)
+	* src/{dzwiek,losowe,pisz,wej}.asm: uzywanie instrukcji
+	  syscall oraz odpowiednich rejestrow w przypadku systemow 64-bitowych.
+	  Napisanie, ze procedura 'jadro' jest dla systemow klasy *BSD.
+	* src/pisz.asm (_pisz_lh): naprawienie bledu nadpisania calego EBX gdy
+	  na stosie zachowywany byl tylko BX
+	* src/f_wej.asm (_f_we_32): poprawka bledu dekrementacji SI, a uzywania
+	  ESI w kodzie 32-bitowym (nie powinno miec znaczenia, bo to tylko
+	  indeks o malych wartosciach).
+	* src/bcd.asm (_bcd_pisz32e): poprawka bledu inkrementacji i
+	  dekrementacji ESI mimo uzywania tylko SI w trybie 16-bitowym
+	* src/fn_wej.asm (_fn_we_32): zapisywanie calego xSI do xAX, zamiast
+	  tylko SI
+	* src/lancuchy.asm (_lan_zcal, _lan_dl_zcal): uzywanie calego xCX jako
+	  dlugosci lancucha, zgodnie z dokumentacja. Poprawka bledu braku
+	  przesuwania xSI i xDI, co powodowalo kopiowanie tylko 1 znaku
+	* src/lancuchy.asm (_lan_dl_zcal): poprawka bledu podwojnej
+	  dekrementacji xCX, co powodowalo kopiowanie za malej liczby znakow
+	* src/wej.asm (_we, _we_dl): poprawka bledu porownywania adresow
+	  16-bitowych w BX i DI takze w trybie 32-bitowym
+	* src/{f_pisz,f_wej,fn_pisz,fn_wej,lancuchy,pisz,wej}.asm:
+	  aktualizacja opisow procedur (parametrow i wartosci zwracanych) w
+	  zwiazku z aktualizacja kodu do 64 bitow.
+	* src/fn_pisz.asm (_pisz_pjpn), src/fn_wej.asm (_fn_we_32),
+	  src/f_pisz.asm (_pisz_pjp), src/f_wej.asm (_f_we_32),
+	  src/wej.asm (_we, _we_dl): uzywanie adresowania 16-bitowego tylko w
+	  kodzie 16-bitowym, a nie zawsze dla BIOS i DOS (DJGPP i format COFF
+	  uzywaja adresowania 32-bitowego).
+	* src/{bcd,losowe,pisz,procesor,wej}.asm: uzywanie dyrektywy CPU tak,
+	  by byla zgodna z trybem kompilacji
+	* incl/dosbios/fasm/fasm_bcd.inc: skasowanie nadmiarowego pliku
+	* src/Makefile: dodanie budowania biblioteki dla 64-bit pod
+	  Linuksem/BSD. Deduplikacja wspolnych definicji
+	* przykl/linuxbsd/nasm/{test_we,test_wy}.asm: aktualizacja, aby kod
+	  kompilowal sie tez na systemach 64-bitowych
+	* bibl/przykl/linuxbsd/fasm64/: dodane przykladowe 64-bitowe programy
+	  dla FASMa
+	* skrypty/{Asm/X86.pm,asmdoc.pl}: aktualizacja z nowszych wersji
+	* ChangeLo.txt, bibl/incl/linuxbsd/fasm/fasm_system.inc,
+	  bibl/incl/linuxbsd/nasm/n_system.inc: usuniecie polskich znaczkow
+
+2013-02-02	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* src/Makefile: poprawka zaleznosci, budowanie wersji COFF dla DJGPP,
+	  zmiana znakow konca linii na DOS-owe
+	* src/*.asm: obsluga formatu COFF (adresowanie tylko 32-bitowe),
+	  zmiana znakow konca linii na DOS-owe
+	* src/losowe.asm, incl/linuxbsd/fasm/fasm_system.inc: usuniecie
+	  polskich znaczkow
+	* src/wewnetrz.inc, czytaj.txt, Licencja.txt, Makefile: zmiana
+	  znakow konca linii na DOS-owe
+	* src/{f_wej,fn_wej}.asm: rozmiar bufora jako stala w jednym miejscu
+	* incl/dosbios/{nasm32,fasm32}: dodanie plikow naglowkowych dla
+	  programow w formacie COFF
+	* incl/dosbios/nasm/*.inc: przerobienie wszystkich wywolan na makro
+	* incl/dosbios/{nasm,nasm32}/n_skacz.inc: plik z makrem wywolania
+	  procedur
+	* src/losowe.asm: ujednolicenie ustawiania ziarna losowosci
+	* czytaj.txt: aktualizacja o format COFF
+	* przykl/dosbios/{fasm32,nasm32}: przyklady programow dla formatu COFF
+	* Makefile, src/Makefile: dodanie generowania zaleznosci
+	* skrypty/asm4doxy.pl: aktualizacja
+
+2013-01-04	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* src/Makefile: poprawka pakowania i tworzenia dokumentacji
+
+2012-12-27	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* czytaj.txt: aktualizacja
+	* incl/dosbios/std_bibl.inc: poprawka sciezek
+	* ChangeLo.txt: poczatek rejestrowania zmian na biezaco
+	* src/*.asm: przerobienie wszystkich wywolan innych procedur z
+	  biblioteki i powrotow na makra zarzadzane z jednego miejsca
+	* src/wewnetrz.inc: plik z makrami wywolania i powrotu
+	* skrypty/asm4doxy.pl: dodany konwerter dla dokumentacji
+	* skrypty/konwgas.pl: dodany konwerter plikow naglowkowych C
+	  na pliki naglowkowe GNU as
+	* src/{wej,f_wej,fn_wej}.asm: poprawka obslugi klawisza backspace
+	* src/wej.asm (_we_dl, _we): poprawka zapisu znakow do [DI] lub [EDI]
+	* skrypty: aktualizacja istniejacych skryptow
+	* skrypty/{Asm/X86.pm,CParse.pl}: dodane zaleznosci dla nowych
+	  wersji skryptow
+	* src/wej.asm (_czysc_klaw): sprawdzenie, czy nacisnieto klawisz
+	  przed pobraniem go
+
+2012-09-16	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* incl/linuxbsd/{nasm/n_system.inc,fasm/fasm_system.inc}:
+	  Aktualizacja funkcji systemowych do jadra w wersji 3.5.3.
+
+2012-04-02	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* incl/linuxbsd/{nasm/n_system.inc,fasm/fasm_system.inc}:
+	  Aktualizacja funkcji systemowych do jadra w wersji 3.2.13.
+
+2012-02-19	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* incl/linuxbsd/{nasm/n_system.inc,fasm/fasm_system.inc}:
+	  Dodalem stala AT_FDCWD do plikow naglowkowych w bibliotece.
+
+2012-01-15	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* incl/linuxbsd/{nasm/n_system.inc,fasm/fasm_system.inc}:
+	  Aktualizacja funkcji systemowych do jadra w wersji 3.1.7.
+
+2011-08-28	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* incl/linuxbsd/{nasm/n_system.inc,fasm/fasm_system.inc}:
+	  Aktualizacja funkcji systemowych do jadra w wersji 3.0.3.
+	* Makefile: poprawka
+
+2009-10-18	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* incl/linuxbsd/{nasm/n_system.inc,fasm/fasm_system.inc}:
+	  Aktualizacja funkcji systemowych do najnowszej wersji informacji
+	  systemowych Linuksa.
+
+2008-02-14	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* src/bcd.asm: dodany modul operacji na liczbach BCD
+	* Makefile: poprawienie celu "paczka"
+	* src/pisz.asm: poprawka braku zachowania rejestru flag w
+	  procedurze pisz_z dla Linux/BSD
+	* poprawiono nieprawidlowe adresowanie 32-bitowe w niektorych
+	  procedurach w wersji dla DOS/BIOS
+	* incl/linuxbsd/{nasm/n_system.inc,fasm/fasm_system.inc}:
+	  dodano troche informacji o przerwaniu int 80h do plikow naglowkowych
+
+2007-08-25	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* przebudowa biblioteki
+	* src/*.asm: jeden kod zrodlowy dla wszystkich obslugiwanych systemow
+	  operacyjnych. Wybor interfejsu jest dokonywany na podstawie stalych
+	  (makr) predefiniowanych na linii polecen z wykorzystaniem
+	  kompilacji warunkowej
+	* */Makefile: ulegly zmianom umozliwiajacym zbudowanie biblioteki
+	  pod kazdym systemem. Jesli Makefile wykryje system DOS,
+	  automatycznie kompilowane sa wersje dla DOSa i BIOSa.
+	* doc: w katalogu "doc" zawarta jest dokumentacja biblioteki
+	  wygenerowana skryptem AsmDoc.
+	* skrypty: w katalogu "skrypty" znajduja sie napisane przeze mnie
+	  skrypty Perla, ktore moga sie przydac w programowaniu. Skrypty
+	  opisane sa na http://rudy.mif.pg.gda.pl/~bogdro/programy.htm.
+	* incl: pliki naglowkowe i przykladowe programy zostaly podzielone
+	  wedlug systemu przeznaczenia
+	* src/*we*.asm: obsluga klawisza BackSpace w DOSie i BIOSie zostala
+	  poprawiona i nie wymaga juz bufora na znaki.
+
+2006-06-03	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* incl/linuxbsd/{nasm/n_system.inc,fasm/fasm_system.inc}:
+	  aktualizacja plikow naglowkowych
