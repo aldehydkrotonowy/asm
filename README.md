@@ -76,3 +76,8 @@ complicated instruction
 - MIMD (multiple instruction, multiple data)
 
 Streaming SIMD Extensions (SSE) 
+
+
+bash
+-e file - true if file exists (for example /dev/null returns true)
+-f file - ture is file exists and is regular file
