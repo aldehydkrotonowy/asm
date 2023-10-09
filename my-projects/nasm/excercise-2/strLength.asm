@@ -1,17 +1,35 @@
 ;calculate length of a string
 
+
+
 section .data
-    text db "hello from loop ",10
+    test: db "hello from loop gfr",0Ah
+    ; text db "string has length of ",10
+
 section .bss
-    userNumber resb 32
+
 section .text
     global _start
 _start:
+    mov rcx, test
+    mov rbx, rcx
+
+nextchar:
+    cmp byte [rbx], 0 ; compare memory byte under addres [rbx]
+    jz finished
+    inc rbx
+    jmp nextchar
+
+finished:
+    sub rbx, rcx; subtract mem addresses
+    sub rbx, 15 ; just for testing purposes
+
+
     ; print question
-    mov rax,1
-    mov rdi,1
-    mov rsi,text
-    mov rdx,21
+    mov rax,1       ;sys call
+    mov rdi,1       ;fd
+    mov rsi,test    ;buf
+    mov rdx,rbx     ;count
     syscall
 
     mov rax,60
