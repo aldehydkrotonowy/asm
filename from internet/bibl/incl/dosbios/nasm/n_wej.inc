@@ -1,0 +1,558 @@
+; Zalacznik do modulu pobierajacego dane od uzytkownika, skladnia NASM
+
+; Copyright (C) 2007-2021 Bogdan 'bogdro' Drozdowski, bogdandr @ op . pl
+;
+; Ta biblioteka jest wolnym oprogramowaniem; mozesz ja rozpowszechniac
+; i/lub modyfikowac zgodnie z licencja GNU Lesser General Public License
+; (GNU LGPL) w wersji wydanej przez Fundacje Wolnego Oprogramowania;
+; wedlug wersji 3 Licencji lub (jesli wolisz) jednej z pozniejszych wersji.
+;
+; Ta biblioteka jest udostepniana z nadzieja, ze bedzie uzyteczna, lecz
+; BEZ JAKIEJKOLWIEK GWARANCJI; nawet domyslnej gwarancji PRZYDATNOSCI
+; HANDLOWEJ albo PRZYDATNOSCI DO OKRESLONYCH ZASTOSOWAN. W celu uzyskania
+; blizszych informacji - Licencja GNU Lesser General Public License.
+;
+; Z pewnoscia wraz z niniejszym programem otrzymales tez egzemplarz
+; Licencji GNU Lesser General Public License; jesli nie - napisz do
+; Fundacji Wolnego Oprogramowania:
+;		Free Software Foundation
+;		51 Franklin Street, Fifth Floor
+;		Boston, MA 02110-1301
+;		USA
+;
+;     This library is free software; you can redistribute it and/or
+;     modify it under the terms of the GNU Lesser General Public
+;     License as published by the Free Software Foundation; either
+;     version 3 of the License, or (at your option) any later version.
+;
+;     This library is distributed in the hope that it will be useful,
+;     but WITHOUT ANY WARRANTY; without even the implied warranty of
+;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;     Lesser General Public License for more details.
+;
+;     You should have received a copy of the GNU Lesser General Public
+;     License along with this library; if not, write to the Free Software
+;     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+;	 MA  02110-1301  USA
+
+%ifndef __NASM_WEJ
+%define __NASM_WEJ
+
+
+
+
+;===================================
+
+%imacro		we16 0
+
+;pobiera liczbe 0-65535, zwraca ja w AX i CF=0
+; CF=1 i AX=ffff jesli blad
+
+	%ifndef	_we_l
+		extern	_we_l
+	%endif
+
+	skacz	_we_l
+		%endm
+
+;===================================
+
+%imacro		we16h 0
+
+;pobiera liczbe heksadecymalna 0-ffff, zwraca ja w AX i CF=0
+; AX=ffff i CF=1, jesli blad
+
+	%ifndef	_we_lh
+		extern	_we_lh
+	%endif
+
+	skacz	_we_lh
+		%endm
+
+;===================================
+
+%imacro		we16z 0
+
+;pobiera liczbe ze znakiem  -32768...32767, zwraca ja w AX i CF=0
+; AX=ffff i CF=1, jesli blad
+
+	%ifndef	_we_lz
+		extern	_we_lz
+	%endif
+
+	skacz	_we_lz
+		%endm
+
+;===================================
+
+%imacro		we16zh 0
+
+;pobiera liczbe heksadecymalna ze znakiem  -8000h...7fff, zwraca ja
+; w AX i CF=0
+; AX=ffff i CF=1 jesli blad
+
+	%ifndef	_we_lzh
+		extern	_we_lzh
+	%endif
+
+	skacz	_we_lzh
+		%endm
+
+;===================================
+
+%imacro		we16b 0
+
+;pobiera liczbe binarna 0-1111 1111 1111 1111  i zwraca ja w AX, CF=0
+; AX=FFFF i CF=1 jesli blad
+
+	%ifndef	_we_lb
+		extern	_we_lb
+	%endif
+
+	skacz	_we_lb
+		%endm
+
+;===================================
+
+%imacro		we16o 0
+
+;pobiera liczbe osemkowa i zwraca ja w AX, CF=0
+; AX=FFFF i CF=1 jesli blad
+
+	%ifndef	_we_lo
+		extern	_we_lo
+	%endif
+
+	skacz	_we_lo
+		%endm
+
+
+;===================================
+;===================================
+
+%imacro		we8 0
+
+;pobiera liczbe 0...255 i zwraca ja w AL i CF=0
+; AL=FF i CF=1 jesli blad
+
+	%ifndef	_we_8
+		extern	_we_8
+	%endif
+
+	skacz	_we_8
+		%endm
+
+;===================================
+
+%imacro		we8h 0
+
+;pobiera liczbe 0...FF i zwraca ja w AL i CF=0
+; AL=FF i CF=1 jesli blad
+
+	%ifndef	_we_8h
+		extern	_we_8h
+	%endif
+
+	skacz	_we_8h
+		%endm
+
+;===================================
+
+%imacro		we8z 0
+
+;pobiera liczbe -128...127 i zwraca ja w AL i CF=0
+; AL=FF i CF=1 jesli blad
+
+	%ifndef	_we_8z
+		extern	_we_8z
+	%endif
+
+	skacz	_we_8z
+		%endm
+
+;===================================
+
+%imacro		we8zh 0
+
+;pobiera liczbe -80h...7f i zwraca ja w AL i CF=0
+; AL=FF i CF=1 jesli blad
+
+	%ifndef	_we_8zh
+		extern	_we_8zh
+	%endif
+
+	skacz	_we_8zh
+		%endm
+
+;===================================
+
+%imacro		we8b 0
+
+;pobiera liczbe 0000 0000...1111 1111 i zwraca ja w AL i CF=0
+; AL=FF i CF=1 jesli blad
+
+	%ifndef	_we_8b
+		extern	_we_8b
+	%endif
+
+	skacz	_we_8b
+		%endm
+
+;===================================
+
+%imacro		we8o 0
+
+;pobiera liczbe osemkowa i zwraca ja w AL i CF=0
+; AL=FF i CF=1 jesli blad
+
+	%ifndef	_we_8o
+		extern	_we_8o
+	%endif
+
+	skacz	_we_8o
+		%endm
+
+
+;===================================
+;===================================
+
+
+%imacro		we32 0
+
+;pobiera liczbe 0-4.294.967.296 i umieszcza w DX:AX, CF=0
+; DX:AX=FFFF:FFFF i CF=1 jesli blad
+
+	%ifndef	_we_32
+		extern	_we_32
+	%endif
+
+	skacz	_we_32
+		%endm
+
+;===================================
+
+%imacro		we32h 0
+
+;pobiera liczbe 0-FFFF FFFF i umieszcza w DX:AX, CF=0
+; DX:AX=FFFF:FFFF i CF=1 jesli blad
+
+	%ifndef	_we_32h
+		extern	_we_32h
+	%endif
+
+	skacz	_we_32h
+		%endm
+
+;===================================
+
+%imacro		we32z 0
+
+;pobiera liczbe -347.483.648...347.483.647  i umieszcza w DX:AX, CF=0
+; DX:AX=FFFF:FFFF i CF=1 jesli blad
+
+	%ifndef	_we_32z
+		extern	_we_32z
+	%endif
+
+	skacz	_we_32z
+		%endm
+
+;===================================
+
+%imacro		we32zh 0
+
+;pobiera liczbe -8000 0000h ... 7fff ffff  i umieszcza w DX:AX, CF=0
+; DX:AX=FFFF:FFFF i CF=1 jesli blad
+
+	%ifndef	_we_32zh
+		extern	_we_32zh
+	%endif
+
+	skacz	_we_32zh
+		%endm
+
+;===================================
+
+%imacro		we32b 0
+
+;pobiera liczbe 32-bitowa binarna i umieszcza w DX:AX, CF=0
+; DX:AX=FFFF:FFFF i CF=1 jesli blad
+
+	%ifndef	_we_32b
+		extern	_we_32b
+	%endif
+
+	skacz	_we_32b
+		%endm
+
+;===================================
+
+%imacro		we32o 0
+
+;pobiera liczbe 32-bitowa osemkowa i umieszcza w DX:AX, CF=0
+; DX:AX=FFFF:FFFF i CF=1 jesli blad
+
+	%ifndef	_we_32o
+		extern	_we_32o
+	%endif
+
+	skacz	_we_32o
+		%endm
+
+
+;===================================
+;===================================
+
+
+%imacro		we32e 0
+
+;pobiera liczbe 0-4.294.967.295, zwraca ja w EAX i CF=0
+; EAX=ffffffff i CF=1 jesli blad
+
+	%ifndef	_we_ld
+		extern	_we_ld
+	%endif
+
+	skacz	_we_ld
+		%endm
+
+;===================================
+
+%imacro		we32eh 0
+
+;pobiera liczbe heksadecymalna 0-ffffffff zwraca ja w EAX i CF=0
+; EAX=ffffffff i CF=1 jesli blad
+
+	%ifndef	_we_ldh
+		extern	_we_ldh
+	%endif
+
+	skacz	_we_ldh
+		%endm
+
+;===================================
+
+%imacro		we32ez 0
+
+;pobiera liczbe ze znakiem -347.483.648...347.483.647 zwraca ja
+; w EAX i CF=0
+; EAX=ffffffff i CF=1 jesli blad
+
+	%ifndef	_we_ldz
+		extern	_we_ldz
+	%endif
+
+	skacz	_we_ldz
+		%endm
+
+;===================================
+
+%imacro		we32ezh 0
+
+;pobiera liczbe heksadecymalna ze znakiem  -80000000h...7fffffff, zwraca ja
+; w EAX i CF=0
+; EAX=ffffffff i CF=1 jesli blad
+
+	%ifndef	_we_ldzh
+		extern	_we_ldzh
+	%endif
+
+	skacz	_we_ldzh
+		%endm
+
+;===================================
+
+%imacro		we32eb 0
+
+;pobiera liczbe binarna 32-bitowa i zwraca ja w EAX, CF=0
+; EAX=FFFFFFFF i CF=1 jesli blad
+
+	%ifndef	_we_ldb
+		extern	_we_ldb
+	%endif
+
+	skacz	_we_ldb
+		%endm
+
+;===================================
+
+%imacro		we32eo 0
+
+;pobiera liczbe osemkowa 32-bitowa i zwraca ja w EAX, CF=0
+; EAX=FFFFFFFF i CF=1 jesli blad
+
+	%ifndef	_we_ldo
+		extern	_we_ldo
+	%endif
+
+	skacz	_we_ldo
+		%endm
+
+
+;===================================
+;===================================
+
+
+%imacro		we64 0
+
+;pobiera liczbe 64-bitowa i umieszcza w EDX:EAX, CF=0
+;EDX:EAX=FFFFFFFF:FFFFFFFF i CF=1 jesli blad
+
+	%ifndef	_we_64
+		extern	_we_64
+	%endif
+
+	skacz	_we_64
+		%endm
+
+;===================================
+
+%imacro		we64h 0
+
+;pobiera liczbe 64-bitowa heksadecymalna i umieszcza w EDX:EAX, CF=0
+;EDX:EAX=FFFFFFFF:FFFFFFFF i CF=1 jesli blad
+
+	%ifndef	_we_64h
+		extern	_we_64h
+	%endif
+
+	skacz	_we_64h
+		%endm
+
+;===================================
+
+%imacro		we64z 0
+
+;pobiera liczbe 64-bitowa ze znakiem i umieszcza w EDX:EAX, CF=0
+;EDX:EAX=FFFFFFFF:FFFFFFFF i CF=1 jesli blad
+
+	%ifndef	_we_64z
+		extern	_we_64z
+	%endif
+
+	skacz	_we_64z
+		%endm
+
+;===================================
+
+%imacro		we64zh 0
+
+;pobiera liczbe 64-bitowa heksadecymalna ze znakiem i umieszcza
+; w EDX:EAX, CF=0
+;EDX:EAX=FFFFFFFF:FFFFFFFF i CF=1 jesli blad
+
+	%ifndef	_we_64zh
+		extern	_we_64zh
+	%endif
+
+	skacz	_we_64zh
+		%endm
+
+;===================================
+
+%imacro		we64b 0
+
+;pobiera liczbe 64-bitowa binarna i umieszcza w EDX:EAX, CF=0
+;EDX:EAX=FFFFFFFF:FFFFFFFF i CF=1 jesli blad
+
+	%ifndef	_we_64b
+		extern	_we_64b
+	%endif
+
+	skacz	_we_64b
+		%endm
+
+;===================================
+
+%imacro		we64o 0
+
+;pobiera liczbe 64-bitowa osemkowa i umieszcza w EDX:EAX, CF=0
+;EDX:EAX=FFFFFFFF:FFFFFFFF i CF=1 jesli blad
+
+	%ifndef	_we_64o
+		extern	_we_64o
+	%endif
+
+	skacz	_we_64o
+		%endm
+
+
+;===================================
+;===================================
+
+
+%imacro		we_c 0
+
+;pobiera cyfre, zwraca jej wartosc (0-9, nie '0'-'9') w AL i CF=0
+;aby pobrac '0'-'9', uzyc _we_z
+; AL=ff i CF=1 jesli blad
+
+	%ifndef	_we_c
+		extern	_we_c
+	%endif
+
+	skacz	_we_c
+		%endm
+
+;===================================
+
+%imacro		we_z 0
+
+;pobiera znak/bajt, zwraca go w AL
+
+	%ifndef	_we_z
+		extern	_we_z
+	%endif
+
+	skacz	_we_z
+		%endm
+
+;===================================
+
+%imacro		we_ch 0
+
+;pobiera "cyfre" heksadecymalna, zwraca ja (0-15, nie '0'-'9' i 'A'-'F')
+;w AL i CF=0
+; AL=ff i CF=1 jesli blad
+
+	%ifndef	_we_ch
+		extern	_we_ch
+	%endif
+
+	skacz	_we_ch
+		%endm
+
+;===================================
+
+%imacro		we 0
+
+;pobiera lancuch znakow zakonczony na CR i umieszcza pod ES:DI
+;pod koniec, ES:DI wskazuje na lancuch znakow ( bez zmian )
+
+	%ifndef	_we
+		extern	_we
+	%endif
+
+	skacz	_we
+		%endm
+
+;===================================
+
+%imacro		we_dl 0
+
+;pobiera lancuch znakow o maksymalnej dlugosci CX ( mniejszej, jesli
+; wcisnieto Enter ) i umieszcza go pod ES:DI
+;CX=dlugosc i CF=0, ES:DI bez zmian
+; CX=FFFF i CF=1 jesli blad ( przekroczono max. dlugosc )
+
+	%ifndef	_we_dl
+		extern	_we_dl
+	%endif
+
+	skacz	_we_dl
+		%endm
+
+
+
+%endif		; __NASM_WEJ
+

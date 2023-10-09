@@ -1,0 +1,12 @@
++- ..\out\pisz.obj &
++- ..\out\wej.obj &
++- ..\out\procesor.obj &
++- ..\out\losowe.obj &
++- ..\out\f_pisz.obj &
+
++- ..\out\dzwiek.obj &
++- ..\out\f_wej.obj &
++- ..\out\fn_pisz.obj &
++- ..\out\fn_wej.obj &
++- ..\out\lancuchy.obj &
++- ..\out\bcd.obj

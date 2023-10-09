@@ -67,3 +67,12 @@ complicated instruction
 - PCLMULQDQ
 - MPSADBW
 - PCMPxSTrx
+
+
+### Taksonomia Flynna
+- SISD (single instruction, single data)
+- SIMD (single instruction, multiple data)
+- MISD (multiple instruction, single data)
+- MIMD (multiple instruction, multiple data)
+
+Streaming SIMD Extensions (SSE) 
