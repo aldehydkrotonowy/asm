@@ -3,7 +3,7 @@
 
 
 section .data
-    test: db "hello from loop gfr",0Ah
+    test: db "abcdefghijklmnoprstuwA",0Ah
     ; text db "string has length of ",10
 
 section .bss

@@ -81,3 +81,50 @@ Streaming SIMD Extensions (SSE)
 bash
 -e file - true if file exists (for example /dev/null returns true)
 -f file - ture is file exists and is regular file
+
+strace
+strace ./myprogram
+-c              count number of system calls
+-e trace=write  find particular syscall
+
+
+git submodule add https://github.com/ReturnInfinity/BareMetal-OS-legacy.git submodules/BareMetal-OS-legacy
+
+CODE EXAMPLES AND EXPLANATIONS
+; -----------------------------------------------------------------------------
+; os_string_length -- Return length of a string
+;  IN:	RSI = string location
+; OUT:	RCX = length (not including the NULL terminator)
+;	All other registers preserved
+os_string_length:
+	push rdi
+	push rax
+
+	xor ecx, ecx
+	xor eax, eax
+	mov rdi, rsi
+	not rcx         ; 1's complement of "0111" is "1000", for example 9 becomes -9
+
+https://en.wikipedia.org/wiki/Direction_flag
+https://learn.microsoft.com/en-us/cpp/c-runtime-library/direction-flag?view=msvc-170
+                  ; This flag is used to determine the direction ('forward' or 'backward') in which several ;bytes of data will be copied from one place in the memory, to another. The direction is important mainly when the original data position in memory and the target data position overlap. If it is set to 0 (using the clear-direction-flag instruction CLD) — it means that string is processed beginning from lowest to highest address; such instructions mode is called auto-incrementing mode. Both the source index and destination index (like MOVS) will increase them;
+	cld             ; Clears the DF flag in the EFLAGS register.
+                  ; When the DF flag is set to 0, string operations increment the index 
+                  ; registers (ESI and/or EDI). Operation is the same in all modes.
+
+
+                  ; The SCAS instruction subtracts the destination string element from the contents of the EAX, AX, or AL register (depending on operand length) and updates the status flags according to the results. The string element and register contents are not modified. The following “short forms” of the SCAS instruction specify the operand length: SCASB (scan byte string), SCASW (scan word string), and SCASD (scan doubleword string).
+                  REPNE - REPeat while Not Equal
+                  ; So it looks like this code is searching for byte 0 stored in eax
+                  ; current byte is pointed by RDI
+                  ; and becouse of CLD command RDI is incremented
+                  ; RCX/ECX (counter) and RDI/EDI (address)
+                  ; repne is using RCX
+	repne scasb			; Compare AL with byte at ES:(E)DI or RDI then set status flags
+	not rcx
+	dec rcx
+
+	pop rax
+	pop rdi
+	ret
+; -----------------------------------------------------------------------------

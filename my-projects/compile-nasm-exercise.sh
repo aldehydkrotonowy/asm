@@ -17,6 +17,7 @@ if [ $1 ] && [ $2 ]; then
   fullPath="${path}${file}"
   o_file="${fullPath}.o"
   asm_file="${fullPath}.asm"
+  lst_file="${fullPath}.lst"
 
   case ${shouldExecute} in
     e) execute=true ;;
@@ -30,7 +31,15 @@ if [ $1 ] && [ $2 ]; then
       echo "removing old  ${file}.o file"
       rm "${o_file}"
     else
-      echo "dupka zbita"
+      echo "cannot remove o file"
+  fi
+
+  if [ -f "${lst_file}" ]; 
+    then
+      echo "removing old  ${lst_file} file"
+      rm "${lst_file}"
+    else
+      echo "cannot remove lst file"
   fi
 
   if [ -f "${path}${file}" ]; then
@@ -38,6 +47,9 @@ if [ $1 ] && [ $2 ]; then
     rm "${path}${file}"
   fi
 
+  nasm -v  
+  echo "creating list file"
+  nasm -f elf64 ${asm_file} -l ${fullPath}.lst
   echo "creating fresh obj file"
   nasm -g -f elf64 -o "${o_file}" "${asm_file}"
 

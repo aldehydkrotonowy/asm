@@ -1,0 +1,41 @@
+     1                                  ;calculate length of a string
+     2                                  
+     3                                  
+     4                                  
+     5                                  section .data
+     6 00000000 616263646566676869-         test: db "abcdefghijklmnoprstuwA",0Ah
+     6 00000009 6A6B6C6D6E6F707273-
+     6 00000012 747577410A         
+     7                                      ; text db "string has length of ",10
+     8                                  
+     9                                  section .bss
+    10                                  
+    11                                  section .text
+    12                                      global _start
+    13                                  _start:
+    14 00000000 48B9-                       mov rcx, test
+    14 00000002 [0000000000000000] 
+    15 0000000A 4889CB                      mov rbx, rcx
+    16                                  
+    17                                  nextchar:
+    18 0000000D 803B00                      cmp byte [rbx], 0 ; compare memory byte under addres [rbx]
+    19 00000010 7405                        jz finished
+    20 00000012 48FFC3                      inc rbx
+    21 00000015 EBF6                        jmp nextchar
+    22                                  
+    23                                  finished:
+    24 00000017 4829CB                      sub rbx, rcx; subtract mem addresses
+    25 0000001A 4883EB0F                    sub rbx, 15 ; just for testing purposes
+    26                                  
+    27                                  
+    28                                      ; print question
+    29 0000001E B801000000                  mov rax,1       ;sys call
+    30 00000023 BF01000000                  mov rdi,1       ;fd
+    31 00000028 48BE-                       mov rsi,test    ;buf
+    31 0000002A [0000000000000000] 
+    32 00000032 4889DA                      mov rdx,rbx     ;count
+    33 00000035 0F05                        syscall
+    34                                  
+    35 00000037 B83C000000                  mov rax,60
+    36 0000003C BF00000000                  mov rdi,0
+    37 00000041 0F05                        syscall
