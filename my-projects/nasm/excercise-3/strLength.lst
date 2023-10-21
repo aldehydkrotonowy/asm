@@ -1,0 +1,46 @@
+     1                                  ;calculate length of a string
+     2                                  
+     3                                  
+     4                                  ;  IN:	RSI = string location
+     5                                  ; OUT:	RCX = length (not including the NULL terminator)
+     6                                  section .data
+     7 00000000 303132333435363738-         numb: db "0123456789", 0Ah
+     7 00000009 390A               
+     8 0000000B 6161610A                    test: db "aaa",0Ah
+     9                                      
+    10                                  section .bss
+    11                                  
+    12                                  section .text
+    13                                      global _start
+    14                                  _start:
+    15 00000000 50                          push rax
+    16 00000001 53                          push rbx
+    17 00000002 51                          push rcx
+    18 00000003 52                          push rdx
+    19 00000004 56                          push rsi
+    20 00000005 57                          push rdi
+    21                                  
+    22 00000006 48BE-                       mov rsi, test
+    22 00000008 [0B00000000000000] 
+    23 00000010 4889F7                      mov rdi, rsi    ;RDI points current byte
+    24                                  
+    25 00000013 4831C9                      xor rcx, rcx    ;used by REPNE?
+    26 00000016 4831C0                      xor rax, rax    ;compare RDI with AL
+    27                                  
+    28 00000019 48F7D1                      not rcx
+    29 0000001C FC                          cld
+    30 0000001D F2AE                        repne scasb
+    31 0000001F 48F7D1                      not rcx
+    32 00000022 48FFC9                  	dec rcx
+    33                                  
+    34                                      ; print how many bytes was found
+    35 00000025 B801000000                  mov rax,1       ;sys call
+    36 0000002A BF01000000                  mov rdi,1       ;fd
+    37 0000002F 48BE-                       mov rsi,numb    ;buf
+    37 00000031 [0000000000000000] 
+    38 00000039 4889CA                      mov rdx,rcx     ;count
+    39 0000003C 0F05                        syscall
+    40                                  
+    41 0000003E B83C000000                  mov rax,60
+    42 00000043 BF00000000                  mov rdi,0
+    43 00000048 0F05                        syscall

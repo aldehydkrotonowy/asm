@@ -25,7 +25,7 @@ finished:
     sub rbx, 15 ; just for testing purposes
 
 
-    ; print question
+    ; print how many bytes was found
     mov rax,1       ;sys call
     mov rdi,1       ;fd
     mov rsi,test    ;buf
