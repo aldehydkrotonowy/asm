@@ -1,3 +1,6 @@
 [submodule "submodules/assemblytutorials"]
 	path = submodules/assemblytutorials
 	url = https://github.com/DGivney/assemblytutorials.git
+[submodule "submodules/BareMetal-OS-legacy"]
+	path = submodules/BareMetal-OS-legacy
+	url = https://github.com/ReturnInfinity/BareMetal-OS-legacy.git

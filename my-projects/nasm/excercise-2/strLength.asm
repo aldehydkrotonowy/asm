@@ -3,7 +3,7 @@
 
 
 section .data
-    test: db "hello from loop gfr",0Ah
+    test: db "abcdefghijklmnoprstuwA",0Ah
     ; text db "string has length of ",10
 
 section .bss
@@ -25,7 +25,7 @@ finished:
     sub rbx, 15 ; just for testing purposes
 
 
-    ; print question
+    ; print how many bytes was found
     mov rax,1       ;sys call
     mov rdi,1       ;fd
     mov rsi,test    ;buf
