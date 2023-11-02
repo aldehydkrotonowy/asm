@@ -112,17 +112,47 @@ cld ; Clears the DF flag in the EFLAGS register.
 
                   ; The SCAS instruction subtracts the destination string element from the contents of the EAX, AX, or AL register (depending on operand length) and updates the status flags according to the results. The string element and register contents are not modified. The following “short forms” of the SCAS instruction specify the operand length: SCASB (scan byte string), SCASW (scan word string), and SCASD (scan doubleword string).
                   REPNE - REPeat while Not Equal
+									termination condition RCX or (E)CX = 0 or ZF=1
                   ; So it looks like this code is searching for byte 0 stored in eax
                   ; current byte is pointed by RDI
                   ; and becouse of CLD command RDI is incremented
                   ; RCX/ECX (counter) and RDI/EDI (address)
                   ; repne is using RCX
-    repne scasb			; Compare AL with byte at ES:(E)DI or RDI then set status flags
-    not rcx
-    dec rcx
-
-    pop rax
-    pop rdi
-    ret
-
 ; -----------------------------------------------------------------------------
+	repne scasb			; Compare AL with byte at ES:(E)DI or RDI then set status flags
+	not rcx
+	dec rcx
+
+	pop rax
+	pop rdi
+	ret
+; -----------------------------------------------------------------------------
+
+linux-x86_64 syscall calling convention is:
+
+RDI -> first parameter
+RSI -> second parameter
+RDX -> third parameter
+R10 -> fourth parameter
+R8  -> fifth parameter
+R9  -> sixth parameter
+R11 -> ... (for all syscalls)
+RCX -> ... (for all syscalls)
+RAX -> return
+
+
+REPNE
+	 default CountReg is RCX in 64bit
+WHILE CountReg !== 0
+	CountReg--
+	IF CountReg === 0 exit
+	IF ZF === 1 exit
+
+
+SCAS
+compare memory operand EDI, RDI with register operand AL, AX, EAX
+THEN IF DF = 0 
+	THEN RDI++
+	ELSE RDI--
+
+

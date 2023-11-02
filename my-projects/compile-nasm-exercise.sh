@@ -51,7 +51,7 @@ if [ $1 ] && [ $2 ]; then
   echo "creating list file"
   nasm -f elf64 ${asm_file} -l ${fullPath}.lst
   echo "creating fresh obj file"
-  nasm -g -f elf64 -o "${o_file}" "${asm_file}"
+  nasm -g -f elf64 -F dwarf -o "${o_file}" "${asm_file}"
 
   if [ -f "${o_file}" ]; then
     echo "linking"
