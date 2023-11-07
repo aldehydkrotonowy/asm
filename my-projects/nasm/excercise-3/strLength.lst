@@ -6,7 +6,8 @@
      6                                  section .data
      7 00000000 303132333435363738-         numb: db "0123456789", 0Ah
      7 00000009 390A               
-     8 0000000B 61616100                    test: db "aaa",00h
+     8 0000000B 616161616161626969-         test: db "aaaaaabiiijyy",00h
+     8 00000014 696A797900         
      9                                      test_l: equ $-test
     10                                      
     11                                  section .bss
@@ -20,36 +21,37 @@
     19 00000003 52                          push rdx
     20 00000004 56                          push rsi
     21 00000005 57                          push rdi
-    22                                  
-    23 00000006 41B904000000                mov r9, test_l
-    24 0000000C 48BE-                       mov rsi, test
-    24 0000000E [0B00000000000000] 
-    25 00000016 4889F7                      mov rdi, rsi    ;RDI points current byte
+    22 00000006 FD                          std
+    23 00000007 41B90E000000                mov r9, test_l
+    24 0000000D 48BE-                       mov rsi, test
+    24 0000000F [0B00000000000000] 
+    25 00000017 4889F7                      mov rdi, rsi    ;RDI points current byte
     26                                  
-    27 00000019 4831C9                      xor rcx, rcx    ;used by REPNE? rcx=0
-    28 0000001C 4831C0                      xor rax, rax    ;compare RDI with AL
-    29                                      
+    27 0000001A 4831C9                      xor rcx, rcx    ;used by REPNE? rcx=0
+    28 0000001D 4831C0                      xor rax, rax    ;compare RDI with AL
+    29                                  
     30                                  _rcx:
-    31 0000001F 48F7D1                      not rcx         ; RCX=-1
+    31 00000020 48F7D1                      not rcx         ; RCX=-1
     32                                  _cld:
-    33 00000022 FC                          cld             ;DF=0 index++, lowest-to-highest address, auto-incrementing
+    33 00000023 FC                          cld             ;DF=0 index++, lowest-to-highest address, auto-incrementing
     34                                  
-    35                                                      ;repne termination (R)(E)CX=0 or ZF=1 (ZF is set by scasb ZF=1 found, ZF=0 not found)
-    36                                  _repne_do:
-    37 00000023 F2AE                        repne scasb     ;RDI=current byte, if DF=0 then (R|E)DI++, RCX++, compare AL<->RDI
-    38 00000025 4C8B17                      mov r10, [RDI]
-    39                                  _repne_done:
-    40 00000028 48F7D1                      not rcx
-    41 0000002B 48FFC9                  	dec rcx
-    42                                  
-    43                                      ; print how many bytes was found
-    44 0000002E B801000000                  mov rax,1       ;sys_write
-    45 00000033 BF01000000                  mov rdi,1       ;fd
-    46 00000038 48BE-                       mov rsi,numb    ;buf
-    46 0000003A [0000000000000000] 
-    47 00000042 4889CA                      mov rdx,rcx     ;count
-    48 00000045 0F05                        syscall
-    49                                  
-    50 00000047 B83C000000                  mov rax,60
-    51 0000004C BF00000000                  mov rdi,0
-    52 00000051 0F05                        syscall
+    35                                                      ;repne termination (R|E|C)X=0 or ZF=1 (ZF is set by scasb ZF=1 found, ZF=0 not found) 
+    36                                                      ;Use RCX for CountReg
+    37                                  _repne_do:
+    38 00000024 F2AE                        repne scasb     ;RDI=current byte, if (cld) DF=0 then (R|E)DI++, RCX--, compare AL<->RDI
+    39 00000026 4C8B17                      mov r10, [RDI]
+    40                                  _repne_done:
+    41 00000029 48F7D1                      not rcx
+    42 0000002C 48FFC9                  	dec rcx
+    43                                  
+    44                                      ; print how many bytes was found
+    45 0000002F B801000000                  mov rax,1       ;sys_write
+    46 00000034 BF01000000                  mov rdi,1       ;fd
+    47 00000039 48BE-                       mov rsi,numb    ;buf
+    47 0000003B [0000000000000000] 
+    48 00000043 4889CA                      mov rdx,rcx     ;count
+    49 00000046 0F05                        syscall
+    50                                  
+    51 00000048 B83C000000                  mov rax,60
+    52 0000004D BF00000000                  mov rdi,0
+    53 00000052 0F05                        syscall

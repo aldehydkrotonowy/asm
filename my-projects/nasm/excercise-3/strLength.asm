@@ -5,7 +5,7 @@
 ; OUT:	RCX = length (not including the NULL terminator)
 section .data
     numb: db "0123456789", 0Ah
-    test: db "aaa",00h
+    test: db "aaaaaabiiijyy",00h
     test_l: equ $-test
     
 section .bss
