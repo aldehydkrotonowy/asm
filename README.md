@@ -19,6 +19,25 @@ gdb ./hello
 | -------- | --- | --- | --- | --- | --- | --- | --- |
 |          | rax | rdi | rsi | rdx | r10 | r8  | r9  |
 
+## registers
+| **type** | **bits** | **registers** |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| general | 8 | al        | bl | cl | dl |  |  |  |  | r8b | r9b | r10b | r11b | r12b | r13b | r14b | r15b |
+|  |  | ah | bh | ch | dh |  |  |  |  |  |  |  |  |  |  |  |  |
+|  | 16 | ax | bx | cx | dx | si | di | sp | bp | r8w | r9w | r10w | r11w | r12w | r13w | r14w | r15w |
+|  | 32 | eax | ebx | ecx | edx | esi | edi | esp | ebp | r8d | r9d | r10d | r11d | r12d | r13d | r14d | r15d |
+|  | 64 | rax | rbx | rcx | rdx | rsi | rdi | rsp | rbp | r8 | r9 | r10 | r11 | r12 | r13 | r14 | r15 |
+| debug | 32 | dr0 | dr1 | dr2 | dr3 |  |  | dr6 | dr7 |  |  |  |  |  |  |  |  |
+| FPU | 80 | st0 | st1 | st2 | st3 | st4 | st5 | st6 | st7 |  |  |  |  |  |  |  |  |
+| mmx | 64 | mm0 | mm1 | mm2 | mm3 | mm4 | mm5 | mm6 | mm7 |  |  |  |  |  |  |  |  |
+| sse | 128 | xmm0 | xmm1 | xmm2 | xmm3 | xmm4 | xmm5 | xmm6 | xmm7 |  |  |  |  |  |  |  |  |
+| avx | 256 | ymm0 | ymm1 | ymm2 | ymm3 | ymm4 | ymm5 | ymm6 | ymm7 |  |  |  |  |  |  |  |  |
+| avx-512 | 512 | zmm0 | zmm1 | zmm2 | zmm3 | zmm4 | zmm5 | zmm6 | zmm7 |  |  |  |  |  |  |  |  |
+| opmask | 64 | k0 | k1 | k2 | k3 | k4 | k5 | k6 | k7 |  |  |  |  |  |  |  |  |
+| bounds | 128 | bnd0 | bnd1 | bnd2 | bnd3 |  |  |  |  |  |  |  |  |  |  |  |  |
+
+r8w - r15w - in AMD 'w' must be replaced with 'l' r8l - r15l
+
 ## syscall examples
 
 #filedesc = 0 - standard input, 1 - standard output, 2 - standard error
