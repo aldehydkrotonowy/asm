@@ -12,7 +12,9 @@ ld -o hello hello.o \
 gdb ./hello
 
 ---
-
+## man pages
+[section 2](https://man7.org/linux/man-pages/dir_section_2.html)
+[syscall list](https://hackeradam.com/x86-64-linux-syscalls/)
 ## arguments order for syscalls
 
 | Argument | ID  | #1  | #2  | #3  | #4  | #5  | #6  |
@@ -174,4 +176,52 @@ THEN IF DF = 0
 	THEN RDI++
 	ELSE RDI--
 
-
+## how scab works - pseudocode
+```C
+if(IsByteComparison()) {
+	Temporary = AL - Source;
+	SetStatusFlags(Temporary);
+	if(DF == 0) {
+		(E)SI = (E)SI + 1;
+		(E)DI = (E)DI + 1;
+	}
+	else {
+		(E)SI = (E)SI - 1;
+		(E)DI = (E)DI - 1;
+	}
+}
+else if(IsWordComparison()) {
+	Temporary = AX - Source;
+	SetStatusFlags(Temporary);
+	if(DF == 0) {
+		(E)SI = (E)SI + 2;
+		(E)DI = (E)DI + 2;
+	}
+	else {
+		(E)SI = (E)SI - 2;
+		(E)DI = (E)DI - 2;
+	}
+}
+else { //doubleword comparison
+	Temporary = EAX - Source;
+	SetStatusFlags(Temporary);
+	if(DF == 0) {
+		(E)SI = (E)SI + 4;
+		(E)DI = (E)DI + 4;
+	}
+	else {
+		(E)SI = (E)SI - 4;
+		(E)DI = (E)DI - 4;
+	}
+}
+```
+## Convert Character to binary [link](https://stackoverflow.com/questions/40769766/convert-character-to-binary-assembly-language)
+```asm
+ cx = 8   ; 8 bits to output
+bin_loop:
+    rcl al,1 ; move most significant bit into CF
+    setc bl  ; bl = 0 or 1 by CF (80386 instruction)
+    add bl,'0' ; turn that 0/1 into '0'/'1' ASCII char
+    call display_bl ; must preserve al and cx
+    loop bin_loop
+```

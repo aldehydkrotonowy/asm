@@ -22,7 +22,7 @@ nextchar:
 
 finished:
     sub rbx, rcx; subtract mem addresses
-    sub rbx, 15 ; just for testing purposes
+    ; sub rbx, 15 ; just for testing purposes
 
 
     ; print how many bytes was found
