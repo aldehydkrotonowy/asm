@@ -1,0 +1,8 @@
+// open keybindings settings (file -> keybindings -> custom json) and paste this
+[
+  {
+    "key": "ctrl+m",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Compile"
+  }
+]

@@ -1,0 +1,69 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // https://code.visualstudio.com/docs/editor/tasks#vscode
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "BUILD",
+      "command": "nasm",
+      "args": [
+        "-f",
+        "elf64",
+        "-F",
+        "dwarf",
+        "-g",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}.o",
+        "${fileDirname}/${fileBasenameNoExtension}.asm"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "showReuseMessage": false,
+        "focus": false, // Controls whether the terminal is taking input focus or not.
+        "panel": "dedicated", // Controls whether the terminal instance is shared between task runs
+        "reveal": "silent", // Controls whether the Integrated Terminal panel is brought to front.
+        "clear": false
+        // "close": true
+      }
+    },
+    {
+      "label": "LINK",
+      "command": "ld",
+      "args": [
+        "-m",
+        "elf_x86_64",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}",
+        "${fileDirname}/${fileBasenameNoExtension}.o"
+      ],
+      "dependsOn": ["BUILD"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "error"
+        }
+      },
+      "presentation": {
+        "showReuseMessage": false,
+        "focus": false,
+        "panel": "dedicated",
+        "reveal": "silent",
+        "clear": false
+        // "close": true
+      }
+    },
+    {
+      "label": "Compile",
+      "dependsOrder": "sequence",
+      "dependsOn": ["BUILD", "LINK"]
+    }
+  ]
+}

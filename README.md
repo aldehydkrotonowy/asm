@@ -12,9 +12,13 @@ ld -o hello hello.o \
 gdb ./hello
 
 ---
+
 ## man pages
+
 [section 2](https://man7.org/linux/man-pages/dir_section_2.html)
 [syscall list](https://hackeradam.com/x86-64-linux-syscalls/)
+[ld linker](https://linux.die.net/man/1/ld)
+
 ## arguments order for syscalls
 
 | Argument | ID  | #1  | #2  | #3  | #4  | #5  | #6  |
@@ -22,21 +26,22 @@ gdb ./hello
 |          | rax | rdi | rsi | rdx | r10 | r8  | r9  |
 
 ## registers
-| **type** | **bits** | **registers** |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| general | 8 | al        | bl | cl | dl |  |  |  |  | r8b | r9b | r10b | r11b | r12b | r13b | r14b | r15b |
-|  |  | ah | bh | ch | dh |  |  |  |  |  |  |  |  |  |  |  |  |
-|  | 16 | ax | bx | cx | dx | si | di | sp | bp | r8w | r9w | r10w | r11w | r12w | r13w | r14w | r15w |
-|  | 32 | eax | ebx | ecx | edx | esi | edi | esp | ebp | r8d | r9d | r10d | r11d | r12d | r13d | r14d | r15d |
-|  | 64 | rax | rbx | rcx | rdx | rsi | rdi | rsp | rbp | r8 | r9 | r10 | r11 | r12 | r13 | r14 | r15 |
-| debug | 32 | dr0 | dr1 | dr2 | dr3 |  |  | dr6 | dr7 |  |  |  |  |  |  |  |  |
-| FPU | 80 | st0 | st1 | st2 | st3 | st4 | st5 | st6 | st7 |  |  |  |  |  |  |  |  |
-| mmx | 64 | mm0 | mm1 | mm2 | mm3 | mm4 | mm5 | mm6 | mm7 |  |  |  |  |  |  |  |  |
-| sse | 128 | xmm0 | xmm1 | xmm2 | xmm3 | xmm4 | xmm5 | xmm6 | xmm7 |  |  |  |  |  |  |  |  |
-| avx | 256 | ymm0 | ymm1 | ymm2 | ymm3 | ymm4 | ymm5 | ymm6 | ymm7 |  |  |  |  |  |  |  |  |
-| avx-512 | 512 | zmm0 | zmm1 | zmm2 | zmm3 | zmm4 | zmm5 | zmm6 | zmm7 |  |  |  |  |  |  |  |  |
-| opmask | 64 | k0 | k1 | k2 | k3 | k4 | k5 | k6 | k7 |  |  |  |  |  |  |  |  |
-| bounds | 128 | bnd0 | bnd1 | bnd2 | bnd3 |  |  |  |  |  |  |  |  |  |  |  |  |
+
+| **type** | **bits** | **registers** |      |      |      |      |      |      |      |     |     |      |      |      |      |      |      |
+| -------- | -------- | ------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | --- | --- | ---- | ---- | ---- | ---- | ---- | ---- |
+| general  | 8        | al            | bl   | cl   | dl   |      |      |      |      | r8b | r9b | r10b | r11b | r12b | r13b | r14b | r15b |
+|          |          | ah            | bh   | ch   | dh   |      |      |      |      |     |     |      |      |      |      |      |      |
+|          | 16       | ax            | bx   | cx   | dx   | si   | di   | sp   | bp   | r8w | r9w | r10w | r11w | r12w | r13w | r14w | r15w |
+|          | 32       | eax           | ebx  | ecx  | edx  | esi  | edi  | esp  | ebp  | r8d | r9d | r10d | r11d | r12d | r13d | r14d | r15d |
+|          | 64       | rax           | rbx  | rcx  | rdx  | rsi  | rdi  | rsp  | rbp  | r8  | r9  | r10  | r11  | r12  | r13  | r14  | r15  |
+| debug    | 32       | dr0           | dr1  | dr2  | dr3  |      |      | dr6  | dr7  |     |     |      |      |      |      |      |      |
+| FPU      | 80       | st0           | st1  | st2  | st3  | st4  | st5  | st6  | st7  |     |     |      |      |      |      |      |      |
+| mmx      | 64       | mm0           | mm1  | mm2  | mm3  | mm4  | mm5  | mm6  | mm7  |     |     |      |      |      |      |      |      |
+| sse      | 128      | xmm0          | xmm1 | xmm2 | xmm3 | xmm4 | xmm5 | xmm6 | xmm7 |     |     |      |      |      |      |      |      |
+| avx      | 256      | ymm0          | ymm1 | ymm2 | ymm3 | ymm4 | ymm5 | ymm6 | ymm7 |     |     |      |      |      |      |      |      |
+| avx-512  | 512      | zmm0          | zmm1 | zmm2 | zmm3 | zmm4 | zmm5 | zmm6 | zmm7 |     |     |      |      |      |      |      |      |
+| opmask   | 64       | k0            | k1   | k2   | k3   | k4   | k5   | k6   | k7   |     |     |      |      |      |      |      |      |
+| bounds   | 128      | bnd0          | bnd1 | bnd2 | bnd3 |      |      |      |      |     |     |      |      |      |      |      |      |
 
 r8w - r15w - in AMD 'w' must be replaced with 'l' r8l - r15l
 
@@ -133,20 +138,22 @@ cld ; Clears the DF flag in the EFLAGS register.
 
                   ; The SCAS instruction subtracts the destination string element from the contents of the EAX, AX, or AL register (depending on operand length) and updates the status flags according to the results. The string element and register contents are not modified. The following “short forms” of the SCAS instruction specify the operand length: SCASB (scan byte string), SCASW (scan word string), and SCASD (scan doubleword string).
                   REPNE - REPeat while Not Equal
-									termination condition RCX or (E)CX = 0 or ZF=1
+    								termination condition RCX or (E)CX = 0 or ZF=1
                   ; So it looks like this code is searching for byte 0 stored in eax
                   ; current byte is pointed by RDI
                   ; and becouse of CLD command RDI is incremented
                   ; RCX/ECX (counter) and RDI/EDI (address)
                   ; repne is using RCX
-; -----------------------------------------------------------------------------
-	repne scasb			; Compare AL with byte at ES:(E)DI or RDI then set status flags
-	not rcx
-	dec rcx
 
-	pop rax
-	pop rdi
-	ret
+; -----------------------------------------------------------------------------
+repne scasb ; Compare AL with byte at ES:(E)DI or RDI then set status flags
+not rcx
+dec rcx
+
+    pop rax
+    pop rdi
+    ret
+
 ; -----------------------------------------------------------------------------
 
 linux-x86_64 syscall calling convention is:
@@ -155,28 +162,27 @@ RDI -> first parameter
 RSI -> second parameter
 RDX -> third parameter
 R10 -> fourth parameter
-R8  -> fifth parameter
-R9  -> sixth parameter
+R8 -> fifth parameter
+R9 -> sixth parameter
 R11 -> ... (for all syscalls)
 RCX -> ... (for all syscalls)
 RAX -> return
 
-
 REPNE
-	 default CountReg is RCX in 64bit
+default CountReg is RCX in 64bit
 WHILE CountReg !== 0
-	CountReg--
-	IF CountReg === 0 exit
-	IF ZF === 1 exit
-
+CountReg--
+IF CountReg === 0 exit
+IF ZF === 1 exit
 
 SCAS
 compare memory operand EDI, RDI with register operand AL, AX, EAX
-THEN IF DF = 0 
-	THEN RDI++
-	ELSE RDI--
+THEN IF DF = 0
+THEN RDI++
+ELSE RDI--
 
 ## how scab works - pseudocode
+
 ```C
 if(IsByteComparison()) {
 	Temporary = AL - Source;
@@ -215,8 +221,10 @@ else { //doubleword comparison
 	}
 }
 ```
+
 ## Convert Character to binary [link](https://stackoverflow.com/questions/40769766/convert-character-to-binary-assembly-language)
-```asm
+
+```assembly
  cx = 8   ; 8 bits to output
 bin_loop:
     rcl al,1 ; move most significant bit into CF
@@ -224,4 +232,41 @@ bin_loop:
     add bl,'0' ; turn that 0/1 into '0'/'1' ASCII char
     call display_bl ; must preserve al and cx
     loop bin_loop
+```
+
+```nasm
+;preambule
+push rbp
+mov  rbp, rsp
+;
+pop rbp
+
+
+
+;calle sved registers according to System V ABI
+push rbp
+mov  rbp, rsp
+push r15
+push r14
+push r13
+push r12
+push rbx
+;pop order
+push rbx
+push r12
+push r13
+push r14
+push r15
+pop rbp
+
+
+rax - 1 return registers
+rdx - 2 return registers
+
+rdi - 1 argument to the function
+rsi - 2 argument to the function
+rdx - 3 argument to the function / 2 return register
+rcx - 4 argument to the function
+r8  - 5 argument to the function
+r9  - 6 argument to the function
 ```

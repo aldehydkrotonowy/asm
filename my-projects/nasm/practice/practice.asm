@@ -1,34 +1,33 @@
 section .data
-  text db "hellokdjfkdksjfsadjkfsdfsdkl jfklsdj flkj", 0Ah
+    test: db "abcdefghijklmnoffffffprstuwA",0Ah
+    ; text db "string has length of ",10
+
 section .bss
-  buff resb 44
+
 section .text
-global _start
+    global _start
 _start:
-  push rax
-  push rbx
-  push rcx
-  push rsi
-  push rdi
+    mov rcx, test
+    mov rbx, rcx
 
-  
-  mov rcx, text
-  mov rbx, rcx
+nextchar:
+    cmp byte [rbx], 0 ; compare memory byte under addres [rbx]
+    jz finished
+    inc rbx
+    jmp nextchar
 
-next:
-  cmp byte [rbx], 0
-  jz end
-  inc rbx
-  jmp next
+finished:
+    sub rbx, rcx; subtract mem addresses
+    ; sub rbx, 15 ; just for testing purposes
 
-end:
-  sub rbx, rcx
-  mov rax, 1
-  mov rdi, 1
-  mov rsi, text
-  mov rdx, rbx
-  syscall
 
-  mov rax, 60
-  mov rdi, 1
-  syscall
+    ; print how many bytes was found
+    mov rax,1       ;sys call
+    mov rdi,1       ;fd
+    mov rsi,test    ;buf
+    mov rdx,rbx     ;count
+    syscall
+
+    mov rax,60
+    mov rdi,0
+    syscall
