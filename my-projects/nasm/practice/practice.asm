@@ -1,33 +1,27 @@
-section .data
-    test: db "abcdefghijklmnoffffffprstuwA",0Ah
-    ; text db "string has length of ",10
-
+section .data 
+    text db "djaksd", Ah0
 section .bss
-
 section .text
-    global _start
+global _start
 _start:
-    mov rcx, test
+    mov rcx, text
     mov rbx, rcx
 
-nextchar:
-    cmp byte [rbx], 0 ; compare memory byte under addres [rbx]
-    jz finished
+next:
+    cmp [rbx], 0
+    jz end
     inc rbx
-    jmp nextchar
+    loop next
 
-finished:
-    sub rbx, rcx; subtract mem addresses
-    ; sub rbx, 15 ; just for testing purposes
+end:
+    sub rbx, rcx
 
-
-    ; print how many bytes was found
-    mov rax,1       ;sys call
-    mov rdi,1       ;fd
-    mov rsi,test    ;buf
-    mov rdx,rbx     ;count
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, text
+    mov rdx, rbx
     syscall
 
-    mov rax,60
-    mov rdi,0
+    mov rax, 60,
+    mov rdi, 0
     syscall
